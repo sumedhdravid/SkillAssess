@@ -1,0 +1,360 @@
+﻿@model List<SkillAssess.Models.SkillAssessment>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Assessment Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            position: relative;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .approve-btn {
+            background-color: #28a745;
+        }
+
+        .reject-btn {
+            background-color: #dc3545;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .pending {
+            background-color: #ffc107;
+        }
+
+        .approved {
+            background-color: #28a745;
+        }
+
+        .rejected {
+            background-color: #dc3545;
+        }
+
+        /* Navigation Bar Styling */
+        nav.navbar {
+            background-color: #007bff !important;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+        }
+
+        .search-form {
+            margin-bottom: 20px; /* Add margin-bottom to create space */
+        }
+
+            .search-form button {
+                padding: 6px 12px;
+                height:38px;
+                width:100px;
+                margin-top: 24px;
+            }
+            
+    </style>
+
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Manager Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="@Url.Action("Index", "Manager")">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("EmployeeDetails", "Manager")">Employee Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#SkillAssessment">Skill Assessment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Reports", "Manager")">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Logout", "Manager")">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <h2>Skill Assessment Details</h2>
+
+    <form asp-controller="Manager" asp-action="SkillAssessmentSearch" method="get" class="search-form">
+        <div class="form-group">
+            <label for="technicalEmployeeId">Technical Employee ID:</label>
+            <input type="text" id="technicalEmployeeId" name="technicalEmployeeId" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="technicalSkillName">Technical Skill Name:</label>
+            <select id="technicalSkillName" name="technicalSkillName" class="form-control">
+                <option value="">Select Technical Skill</option>
+                <!-- Technical skill options will be populated dynamically -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="technicalMinimumRating">Technical Minimum Rating:</label>
+            <input type="number" id="technicalMinimumRating" name="technicalMinimumRating" class="form-control" min="0" max="10" />
+        </div>
+
+        <div class="form-group">
+            <label for="softSkillName">Soft Skill Name:</label>
+            <select id="softSkillName" name="softSkillName" class="form-control">
+                <option value="">Select Soft Skill</option>
+                <!-- Soft skill options will be populated dynamically -->
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="softMinimumRating">Proficiency Level:</label>
+            <select id="softMinimumRating" name="softMinimumRating" class="form-control">
+                <option value="">Select Proficiency Level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status" name="status" class="form-control">
+                <option value="">Select Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+
+
+
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Assessment ID</th>
+                <th>Employee ID</th>
+                <th>Database </th>
+                <th>Programming </th>
+                <th>Java </th>
+                <th>C# </th>
+                <th>Python</th>
+                <th>Web Programming</th>
+                <th>Other</th>
+                <th>Verbal Communication</th>
+                <th>Written Communication</th>
+                <th>Teamwork</th>
+                <th>Problem Solving</th>
+                <th>Decision Making</th>
+                <th>Leadership</th>
+                <th>Foreign Language</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var assessment in Model)
+            {
+                <tr>
+                    <td>@assessment.AssessmentID</td>
+                    <td>@assessment.EmpID</td>
+                    <td>@assessment.DatabaseRating</td>
+                    <td>@assessment.ProgrammingRating</td>
+                    <td>@assessment.JavaRating</td>
+                    <td>@assessment.CSRating</td>
+                    <td>@assessment.PythonRating</td>
+                    <td>@assessment.WebProgrammingRating</td>
+                    <td>@assessment.OtherTechnical</td>
+                    <td>@assessment.VerbalCommunication</td>
+                    <td>@assessment.WrittenCommunication</td>
+                    <td>@assessment.Teamwork</td>
+                    <td>@assessment.ProblemSolving</td>
+                    <td>@assessment.DecisionMaking</td>
+                    <td>@assessment.Leadership</td>
+                    <td>@assessment.AnyForeignLanguage</td>
+                    <td>
+                        <span class="status @(assessment.Status.ToLower())">
+                            @assessment.Status
+                        </span>
+                    </td>
+                    <td>
+                        <form asp-controller="Manager" asp-action="ApproveSkillAssessment" method="post">
+                            <input type="hidden" name="assessmentId" value="@assessment.AssessmentID" />
+                            <button type="submit" class="approve-btn">Approve</button>
+                        </form>
+                        <form asp-controller="Manager" asp-action="RejectSkillAssessment" method="post">
+                            <input type="hidden" name="assessmentId" value="@assessment.AssessmentID" />
+                            <button type="submit" class="reject-btn">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <script>
+        // Function to disable the buttons after they have been clicked
+        function disableButtons() {
+            var buttons = document.querySelectorAll('.approve-btn, .reject-btn');
+            buttons.forEach(function (button) {
+                button.disabled = true; // Disable the button
+                button.classList.add('disabled'); // Add a class to indicate that the button is disabled
+            });
+        }
+
+        // Event listener to call the disableButtons function when the form is submitted
+        document.addEventListener('DOMContentLoaded', function () {
+            var forms = document.querySelectorAll('form');
+            forms.forEach(function (form) {
+                form.addEventListener('submit', function () {
+                    disableButtons();
+                });
+            });
+        });
+
+
+        // Extract skill names from table headers
+        // var skillNames = [];
+        // document.querySelectorAll('table th').forEach(function (th) {
+        //     var skillName = th.textContent.trim();
+        //     if (skillName !== 'Assessment ID' && skillName !== 'Employee ID' && skillName !== 'Status' && skillName !== 'Action') {
+        //         skillNames.push(skillName);
+        //     }
+        // });
+
+
+        // Function to populate the dropdown list with unique technical skills
+        function populateTechnicalSkills() {
+            var technicalSkillDropdown = document.getElementById('technicalSkillName');
+            var uniqueTechnicalSkills = [];
+
+            // Add unique soft skill names from the model
+            uniqueTechnicalSkills.push('Database');
+            uniqueTechnicalSkills.push('Programming');
+            uniqueTechnicalSkills.push('Java');
+            uniqueTechnicalSkills.push('C#');
+            uniqueTechnicalSkills.push('Python');
+            uniqueTechnicalSkills.push('Web Programming');
+            uniqueTechnicalSkills.push('Other Technical');
+            // // Iterate over the table headers to extract technical skill names
+            // document.querySelectorAll('table th').forEach(function (th) {
+            //     var skillName = th.textContent.trim();
+            //     if (skillName !== 'Assessment ID' && skillName !== 'Employee ID' && skillName !== 'Status' && skillName !== 'Action') {
+            //         uniqueTechnicalSkills.push(skillName);
+            //     }
+            // });
+
+            // Populate the dropdown with unique technical skill names
+            uniqueTechnicalSkills.forEach(function (skillName) {
+                var option = document.createElement('option');
+                option.textContent = skillName;
+                option.value = skillName;
+                technicalSkillDropdown.appendChild(option);
+            });
+        }
+
+        // Function to populate the dropdown list with unique soft skills
+        function populateSoftSkills() {
+            var softSkillDropdown = document.getElementById('softSkillName');
+            var uniqueSoftSkills = [];
+
+            // Add unique soft skill names from the model
+            uniqueSoftSkills.push('Verbal Communication');
+            uniqueSoftSkills.push('Written Communication');
+            uniqueSoftSkills.push('Teamwork');
+            uniqueSoftSkills.push('Problem Solving');
+            uniqueSoftSkills.push('Decision Making');
+            uniqueSoftSkills.push('Leadership');
+            uniqueSoftSkills.push('Any Foreign Language');
+
+            // Populate the dropdown with unique soft skill names
+            uniqueSoftSkills.forEach(function (skillName) {
+                var option = document.createElement('option');
+                option.textContent = skillName;
+                option.value = skillName;
+                softSkillDropdown.appendChild(option);
+            });
+        }
+
+        // Call the functions to populate the dropdowns when the page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            populateTechnicalSkills();
+            populateSoftSkills();
+        });
+    </script>
+
+    
+</body>
+</html>

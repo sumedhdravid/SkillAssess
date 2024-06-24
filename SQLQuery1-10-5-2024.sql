@@ -1,0 +1,1 @@
+ALTER TABLE Employees ADD Photo VARBINARY(MAX) NULL;

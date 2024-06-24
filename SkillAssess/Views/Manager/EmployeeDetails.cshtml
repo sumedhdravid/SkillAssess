@@ -1,0 +1,186 @@
+﻿@model List<SkillAssess.Models.Employee>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+             padding: 20px; 
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        /* Navigation Bar Styling */
+        nav.navbar {
+            background-color: #007bff !important;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+        }
+
+        /* Search Bar Styling */
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+            .search-container input[type="text"] {
+                padding: 10px;
+                font-size: 17px;
+                border: 1px solid #ccc;
+                float: left;
+                width: calc(40% - 10px);
+                margin-right: 10px;
+                background: #f1f1f1;
+            }
+
+            .search-container button {
+                padding: 10px;
+                background: #007bff;
+                color: white;
+                font-size: 17px;
+                border: 1px solid #ccc;
+                border-left: none;
+                cursor: pointer;
+            }
+
+                .search-container button:hover {
+                    background: #0056b3;
+                }
+    </style>
+
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Manager Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="@Url.Action("Index", "Manager")">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#EmployeeDetails">Employee Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("SkillAssessment", "Manager")">Skill Assessment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Reports", "Manager")">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Logout", "Manager")">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <h2>Employee Details</h2>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <form action="@Url.Action("EmployeeDetails", "Manager")" method="get">
+            <input type="text" placeholder="Search by Employee ID" name="employeeId">
+            <input type="text" placeholder="Search by First Name or Last Name" name="name">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Employee ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Job Role</th>
+                <th>Gender</th>
+                <th>DOB</th>
+                <th>Contact Number</th>
+                <th>Address</th>
+                <th>Date Of Joining</th>
+                <th>Total IT Experience</th>
+                <th>Bachelor Degree</th>
+                <th>Bachelor Specialization</th>
+                <th>Masters Degree</th>
+                <th>Masters Specialization</th>
+                <th>Certifications</th>
+                <th>Reporting Manager</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(employee.Photo))
+                        {
+                            <img src="@Url.Content($"~/Uploads/{employee.Photo}")" class="profile-photo" alt="Profile Photo" style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;" />
+                        }
+                        else
+                        {
+                            <span>No photo available</span>
+                        }
+                    </td>
+
+
+                    <td>@employee.EmployeeId</td>
+                    <td>@employee.FirstName</td>
+                    <td>@employee.LastName</td>
+                    <td>@employee.Email</td>
+                    <td>@employee.JobRole</td>
+                    <td>@employee.Gender</td>
+                    <td>@employee.DOB</td>
+                    <td>@employee.ContactNumber</td>
+                    <td>@employee.Address</td>
+                    <td>@employee.DateOfJoining</td>
+                    <td>@employee.TotalExperience</td>
+                    <td>@employee.BachelorDegree</td>
+                    <td>@employee.BachelorSpecialization</td>
+                    <td>@employee.MastersDegree</td>
+                    <td>@employee.MastersSpecialization</td>
+                    <td>@employee.Certifications</td>
+                    <td>@employee.ReportingManagerEmail</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

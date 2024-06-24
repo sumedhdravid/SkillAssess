@@ -1,0 +1,742 @@
+﻿@* @model SkillAssess.Models.SkillAssessment
+
+@* @if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        @TempData["AlertMessage"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+} *@
+
+@*<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Assessment Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Employee Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="@Url.Action("Index", "Employee")">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("LMSRegistration", "Employee")">LMS Registration</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#SkillAssessment">Skill Assessment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Reports", "Employee")">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Logout", "Employee")">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    @* @if (TempData["AlertMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["AlertMessage"]
+        </div>
+    } *@
+
+   @* @if (ViewBag.LMSFormSubmitted != null && ViewBag.LMSFormSubmitted == true)
+   {
+        <form id="skillAssessmentForm" asp-action="SkillAssessment" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+        <h2>Skill Assessment Form</h2>
+        
+         <label for="EmployeeId">Employee ID:</label>
+        <input type="text" id="EmpID" name="EmpID" placeholder="Enter Employee ID" required> 
+
+        <h3>Technical Skills</h3>
+        <label for="DatabaseRating">Database:</label>
+        <select id="DatabaseRating" name="DatabaseRating" required>
+            <option value="">Select rating</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <br>
+
+        <label for="ProgrammingRating">Programming:</label>
+        <select id="ProgrammingRating" name="ProgrammingRating" required>
+            <option value="">Select rating</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <br />
+
+        <label for="JavaRating">Java Rating:</label>
+        <select id="JavaRating" name="JavaRating" required>
+            <option value="">Select rating</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <br />
+
+        <label for="CSRating">C# :</label>
+        <select id="CSRating" name="CSRating" required>
+            <option value="">Select rating</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <br />
+
+        <label for="PyhtonRating">Python Rating:</label>
+        <select id="PythonRating" name="PythonRating" required>
+            <option value="">Select rating</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <br />
+
+        <label for="WebProgrammingRating">Web Programming:</label>
+        <select id="WebProgrammingRating" name="WebProgrammingRating" required>
+            <option value="">Select rating</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <br />
+
+        @* <label for="OtherTechnical">Other Technical Skills:</label>
+        <input type="text" id="OtherTechnical" name="OtherTechnical" placeholder="Enter Other Technical Skills">
+        <br /> *@
+       @* <label for="OtherTechnical">Other Technical Skills:</label>
+        <div id="otherTechnicalContainer">
+            <input type="text" id="OtherTechnical" name="OtherTechnical[]" placeholder="Enter Other Technical Skills">
+        </div>
+        <button type="button" onclick="addInputField('otherTechnicalContainer')">+</button>
+        <br />
+
+        <h3>Soft Skills</h3>
+        <label for="VerbalCommunication">Verbal Communication:</label>
+        <select id="VerbalCommunication" name="VerbalCommunication" required>
+            <option value="">Select proficiency level</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+        <br>
+
+        <label for="WrittenCommunication">Written Communication:</label>
+        <select id="WrittenCommunication" name="WrittenCommunication" required>
+            <option value="">Select proficiency level</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+        <br>
+
+        <label for="Teamwork">Teamwork:</label>
+        <select id="Teamwork" name="Teamwork" required>
+            <option value="">Select proficiency level</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+        <br>
+
+        <label for="ProblemSolving">Problem Solving:</label>
+        <select id="ProblemSolving" name="ProblemSolving" required>
+            <option value="">Select proficiency level</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+        <br>
+
+        <label for="DecisionMaking">Decision Making:</label>
+        <select id="DecisionMaking" name="DecisionMaking" required>
+            <option value="">Select proficiency level</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+        <br>
+
+        <label for="Leadership">Leadership:</label>
+        <select id="Leadership" name="Leadership" required>
+            <option value="">Select proficiency level</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+        <br>
+
+        @* <label for="AnyForeignLanguage">Any Foreign Language:</label>
+        <input type="text" id="AnyForeignLanguage" name="AnyForeignLanguage" placeholder="Enter Any Foreign Language">
+        <br /> *@
+       @* <label for="AnyForeignLanguage">Any Foreign Language:</label>
+        <div id="foreignLanguageContainer">
+            <input type="text" id="AnyForeignLanguage" name="AnyForeignLanguage[]" placeholder="Enter Any Foreign Language">
+        </div>
+        <button type="button" onclick="addInputField('foreignLanguageContainer')">+</button>
+        <br />
+
+        
+        <button type="submit">Submit</button>
+    </form>
+   }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            Please fill out the LMS Registration Form first.
+        </div>
+    }
+     <script>
+        function addInputField(containerId) {
+            // Get the container element
+            var container = document.getElementById(containerId);
+
+            // Create a new input element
+            var input = document.createElement("input");
+            input.type = "text";
+            input.placeholder = "Enter Skill";
+
+            // Create a "+" button
+            var addButton = document.createElement("button");
+            addButton.textContent = "+";
+            addButton.type = "button";
+            addButton.onclick = function () {
+                addInputField(containerId);
+            };
+
+            // Create a "-" button
+            var removeButton = document.createElement("button");
+            removeButton.textContent = "-";
+            removeButton.type = "button";
+            removeButton.onclick = function () {
+                container.removeChild(input);
+                container.removeChild(addButton);
+                container.removeChild(removeButton);
+            };
+
+            // Append the input element and buttons to the container
+            container.appendChild(input);
+            container.appendChild(addButton);
+            container.appendChild(removeButton);
+        }
+
+        
+    </script>
+     
+
+</body>
+</html> *@
+
+@model SkillAssess.Models.SkillAssessment
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Assessment Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+            button[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+
+        .navbar-custom {
+            background-color: #007bff;
+        }
+
+            .navbar-custom .navbar-brand,
+            .navbar-custom .nav-link {
+                color: #fff;
+            }
+
+        .btn-add, .btn-remove {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+            .btn-add:hover, .btn-remove:hover {
+                background-color: #0056b3;
+            }
+
+        .btn-remove {
+            background-color: #dc3545;
+        }
+
+            .btn-remove:hover {
+                background-color: #c82333;
+            }
+
+        input[readonly] {
+            background-color: #f8f9fa; /* Light gray background color */
+            color: #6c757d; /* Text color */
+            cursor: not-allowed; /* Show cursor as not allowed */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <a class="navbar-brand" href="#">Employee Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="@Url.Action("Index", "Employee")">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("LMSRegistration", "Employee")">LMS Registration</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#SkillAssessment">Skill Assessment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Reports", "Employee")">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Logout", "Employee")">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    @if (ViewBag.LMSFormSubmitted != null && ViewBag.LMSFormSubmitted == true)
+    {
+        <form id="skillAssessmentForm" asp-action="SkillAssessment" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <h2>Skill Assessment Form</h2>
+
+            <!-- Automatically fill Employee ID field with logged-in user's ID -->
+            <input type="text" id="EmpID" name="EmpID" value="@(((SkillAssess.Models.Employee)ViewBag.LoggedInEmployee)?.EmployeeId)" readonly required>
+
+
+            @* <label for="EmployeeId">Employee ID:</label>
+            <input type="text" id="EmpID" name="EmpID" placeholder="Enter Employee ID" required> *@
+
+            <h3>Technical Skills</h3>
+            <label for="DatabaseRating">Database:</label>
+            <select id="DatabaseRating" name="DatabaseRating" required>
+                <option value="">Select rating</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <br>
+
+            <label for="ProgrammingRating">Programming:</label>
+            <select id="ProgrammingRating" name="ProgrammingRating" required>
+                <option value="">Select rating</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <br />
+
+            <label for="JavaRating">Java Rating:</label>
+            <select id="JavaRating" name="JavaRating" required>
+                <option value="">Select rating</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <br />
+
+            <label for="CSRating">C# :</label>
+            <select id="CSRating" name="CSRating" required>
+                <option value="">Select rating</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <br />
+
+            <label for="PythonRating">Python Rating:</label>
+            <select id="PythonRating" name="PythonRating" required>
+                <option value="">Select rating</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <br />
+
+            <label for="WebProgrammingRating">Web Programming:</label>
+            <select id="WebProgrammingRating" name="WebProgrammingRating" required>
+                <option value="">Select rating</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <br />
+
+            <div id="OtherTechnicalContainer">
+                <label for="OtherTechnical">Other Technical Skills:</label>
+                <div class="technical-skill">
+                    <input type="text" name="OtherTechnical" placeholder="Skill Name">
+                    <select name="OtherTechnicalRating" required>
+                        <option value="">Select rating</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                    <button type="button" class="btn-remove" onclick="removeSkill(this)">-</button>
+                </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addTechnicalSkill()">Add Another Technical Skill</button>
+            <br>
+
+
+            <h3>Soft Skills</h3>
+            <label for="VerbalCommunication">Verbal Communication:</label>
+            <select id="VerbalCommunication" name="VerbalCommunication" required>
+                <option value="">Select proficiency level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+            <br>
+
+            <label for="WrittenCommunication">Written Communication:</label>
+            <select id="WrittenCommunication" name="WrittenCommunication" required>
+                <option value="">Select proficiency level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+            <br>
+
+            <label for="Teamwork">Teamwork:</label>
+            <select id="Teamwork" name="Teamwork" required>
+                <option value="">Select proficiency level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+            <br>
+
+            <label for="ProblemSolving">Problem Solving:</label>
+            <select id="ProblemSolving" name="ProblemSolving" required>
+                <option value="">Select proficiency level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+            <br>
+
+            <label for="DecisionMaking">Decision Making:</label>
+            <select id="DecisionMaking" name="DecisionMaking" required>
+                <option value="">Select proficiency level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+            <br>
+
+            <label for="Leadership">Leadership:</label>
+            <select id="Leadership" name="Leadership" required>
+                <option value="">Select proficiency level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+            <br>
+
+            <div id="AnyForeignLanguageContainer">
+                <label for="AnyForeignLanguage">Any Foreign Language Skills:</label>
+                <div class="foreign-language-skill">
+                    <input type="text" name="AnyForeignLanguage" placeholder="Language Name">
+                    <select name="AnyForeignLanguageRating" required>
+                        <option value="">Select proficiency level</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                    <button type="button" class="btn-remove" onclick="removeLanguage(this)">-</button>
+                </div>
+            </div>
+            <button type="button" class="btn-add" onclick="addForeignLanguageSkill()">Add Another Foreign Language</button>
+            <br>
+
+            <button type="submit">Submit</button>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            Please fill out the LMS Registration Form first.
+        </div>
+    }
+
+    <script>
+        
+
+        function addTechnicalSkill() {
+            var container = document.getElementById("OtherTechnicalContainer");
+            var div = document.createElement("div");
+            div.classList.add("technical-skill");
+            div.innerHTML = `
+                        <input type="text" name="OtherTechnical" placeholder="Skill Name" required>
+                        <select name="OtherTechnicalRating" required>
+                            <option value="">Select rating</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        <button type="button" class="btn-remove" onclick="removeSkill(this)">-</button>`;
+            container.appendChild(div);
+        }
+
+        function addForeignLanguageSkill() {
+            var container = document.getElementById("AnyForeignLanguageContainer");
+            var div = document.createElement("div");
+            div.classList.add("foreign-language-skill");
+            div.innerHTML = `
+                        <input type="text" name="AnyForeignLanguage" placeholder="Language Name" required>
+                        <select name="AnyForeignLanguageRating" required>
+                            <option value="">Select proficiency level</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                        <button type="button" class="btn-remove" onclick="removeLanguage(this)">-</button>`;
+            container.appendChild(div);
+        }
+
+        function removeSkill(button) {
+            var div = button.parentElement;
+            div.parentElement.removeChild(div);
+        }
+
+        function removeLanguage(button) {
+            var div = button.parentElement;
+            div.parentElement.removeChild(div);
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

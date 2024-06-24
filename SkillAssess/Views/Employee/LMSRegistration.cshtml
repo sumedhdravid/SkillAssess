@@ -1,0 +1,355 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+        @model SkillAssess.Models.Employee
+@{
+    var alertMessage = HttpContextAccessor.HttpContext.Session.GetString("AlertMessage");
+    if (!string.IsNullOrEmpty(alertMessage))
+    {
+        <div class="alert alert-info" role="alert">
+            @alertMessage
+        </div>
+        HttpContextAccessor.HttpContext.Session.Remove("AlertMessage");
+    }
+}
+
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["AlertMessage"]
+    </div>
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard - LMS Registration</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .navbar {
+            background-color: #007bff !important; 
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #ffffff !important; 
+        }
+
+        .navbar-nav .nav-link.active {
+            font-weight: bold;
+        }
+
+        .container-fluid {
+            padding-top: 20px;
+        }
+
+        section {
+            margin-bottom: 30px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Employee Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "Employee")">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="@Url.Action("LMSRegistration", "Employee")">LMS Registration</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("SkillAssessment", "Employee")">Skill Assessment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Reports", "Employee")">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Logout", "Employee")">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <section id="lms-registration">
+                    <h2 align="center">LMS Registration</h2>
+                    <form id="lmsForm" asp-action="LMSRegistration" method="post" onsubmit="return validateDate()" enctype="multipart/form-data">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
+                        <div class="form-group">
+                            <label for="EmployeeID">Employee ID:</label>
+                            <input asp-for="EmployeeId" class="form-control" />
+                            <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="FirstName">First Name:</label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="LastName">Last Name:</label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="JobRole">Job Role:</label>
+                            <select asp-for="JobRole" class="form-control" required>
+                                <option value="">Job Role</option>
+                                <option value="Employee">Employee</option>
+                                <option value="Manager">Manager</option>
+                            </select>
+                            <span asp-validation-for="JobRole" class="text-danger"></span>
+                        </div>
+
+                         <div class="form-group">
+                            <label for="ReportingManager">Reporting Manager:</label>
+                            <select asp-for="ReportingManagerEmail" class="form-control">
+                                <option value="">Select Reporting Manager</option>
+                                @foreach (var manager in ViewBag.Managers)
+                                {
+                                    <option value="@manager.Email">@manager.Email</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ReportingManagerEmail" class="text-danger"></span>
+                        </div> 
+
+                        <div class="form-group">
+                            <label for="Gender">Gender:</label>
+                            <select asp-for="Gender" class="form-control" required>
+                                <option value="">Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="DOB">Date of Birth:</label>
+                            <input type="date" asp-for="DOB" class="form-control" />
+                            <span asp-validation-for="DOB" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ContactNumber">Contact Number:</label>
+                            <input asp-for="ContactNumber" class="form-control" />
+                            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="EmailID">Email ID:</label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                        <div class="form-group">
+                            <label for="Address">Address:</label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="DateOfJoining">Date Of Joining:</label>
+                            <input type="date" asp-for="DateOfJoining" class="form-control" />
+                            <span asp-validation-for="DateOfJoining" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TotalITExperience">Total IT Experience:</label>
+                            <input asp-for="TotalExperience" class="form-control" />
+                            <span asp-validation-for="TotalExperience" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="BachelorDegree">Bachelor Degree:</label>
+                            <select asp-for="BachelorDegree" class="form-control">
+                                <option value="">Select Bachelor Degree</option>
+                                <option value="BA">BA</option>
+                                <option value="BCOM">BCOM</option>
+                                <option value="BSC">BSC</option>
+                                <option value="BCA">BCA</option>
+                                <option value="BE">BE</option>
+                                <option value="BTech">BTech</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span asp-validation-for="BachelorDegree" class="text-danger"></span>
+                        </div>
+
+                        <div>
+                            <label for="BachelorSpecialization">Bachelor Specialization:</label>
+                            <select asp-for="BachelorSpecialization" class="form-control" id="BachelorSpecialization">
+                                <option value="">Select Specialization</option>
+                                <!-- Options will be populated dynamically -->
+                            </select>
+                            <span asp-validation-for="BachelorSpecialization" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="MastersDegree">Masters Degree:</label>
+                            <select asp-for="MastersDegree" class="form-control">
+                                <option value="">Select Masters Degree</option>
+                                <option value="MA">MA</option>
+                                <option value="MCOM">MCOM</option>
+                                <option value="MSC">MSC</option>
+                                <option value="MCA">MCA</option>
+                                <option value="ME">ME</option>
+                                <option value="MTech">MTech</option>
+                                <option value="MBA">MBA</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span asp-validation-for="MastersDegree" class="text-danger"></span>
+                        </div>
+
+                        <div>
+                            <label for="MastersSpecialization">Masters Specialization:</label>
+                            <select asp-for="MastersSpecialization" class="form-control" id="MastersSpecialization">
+                                <option value="">Select Specialization</option>
+                                <!-- Options will be populated dynamically -->
+                            </select>
+                            <span asp-validation-for="MastersSpecialization" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Certifications">Certification:</label>
+                            <input asp-for="Certifications" class="form-control" />
+                            <span asp-validation-for="Certifications" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ProfileFile">Profile Photo</label>
+                            <input asp-for="ProfileFile" type="file" class="form-control" accept="image/png, image/jpg, image/svg+xml" />
+                            <span asp-validation-for="ProfileFile" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function validateDate() {
+            var currentDate = new Date();
+            var selectedDate = new Date(document.getElementById("DOB").value);
+
+            
+            if (selectedDate > currentDate) {
+                alert("Date of Birth cannot be ahead of the current date.");
+                document.getElementById("DOB").value = "";
+                return false;
+            }
+
+            
+            var minDOB = new Date();
+            minDOB.setFullYear(minDOB.getFullYear() - 21);
+
+            
+            if (selectedDate > minDOB) {
+                alert("Employee must be at least 21 years old.");
+                document.getElementById("DateOfJoining").value = ""; 
+                return false;
+            }
+
+            
+            var email = document.getElementById("Email").value;
+            if (!email.endsWith("@@prorigosoftware.com")) {
+                alert("Email must belong to prorigosoftware domain.");
+                return false;
+            }
+
+            
+            var phoneNumber = document.getElementById("ContactNumber").value;
+            if (!phoneNumber.match(/^[789]\d{9}$/)) {
+                alert("Phone number must start with 9, 8, or 7 and have 10 digits.");
+                return false;
+            }
+
+            return true; 
+        }
+
+        
+        const degreesSpecializations = {
+            "BA": ["NA", "History", "English", "Economics", "Political Science","Other"],
+            "BCOM": ["NA", "Accounting", "Finance", "Marketing", "Human Resources", "Other"],
+            "BSC": ["NA","Computer Science","Physics", "Chemistry", "Biology", "Mathematics", "Other"],
+            "BCA": ["Computer Applications"],
+            "BE": ["NA", "Mechanical", "Electrical", "Civil", "Computer Science", "Other"],
+            "BTech": ["NA", "Information Technology", "Mechanical", "Electrical", "Civil", "Other"]
+        };
+
+        const mastersDegreesSpecializations = {
+            "MA": ["NA", "History", "English", "Economics", "Political Science", "Other"],
+            "MCOM": ["NA", "Accounting", "Finance", "Marketing", "Human Resources", "Other"],
+            "MSC": ["NA","Computer Science","Physics", "Chemistry", "Biology", "Mathematics", "Other"],
+            "MCA": ["Computer Applications"],
+            "ME": ["NA", "Mechanical", "Electrical", "Civil", "Computer Science", "Other"],
+            "MTech": ["NA", "Information Technology", "Mechanical", "Electrical", "Civil", "Other"],
+            "MBA": ["NA", "Marketing", "Finance", "Human Resources", "Operations", "Other"]
+        };
+
+        document.getElementById("BachelorDegree").addEventListener("change", function () {
+            updateSpecializationDropdown(this.value, "BachelorSpecialization", degreesSpecializations);
+        });
+
+        document.getElementById("MastersDegree").addEventListener("change", function () {
+            updateSpecializationDropdown(this.value, "MastersSpecialization", mastersDegreesSpecializations);
+        });
+
+        function updateSpecializationDropdown(degree, specializationId, specializationOptions) {
+            const specializationSelect = document.getElementById(specializationId);
+            specializationSelect.innerHTML = '<option value="">Select Specialization</option>'; 
+
+            if (specializationOptions[degree]) {
+                specializationOptions[degree].forEach(function (specialization) {
+                    const option = document.createElement("option");
+                    option.value = specialization;
+                    option.textContent = specialization;
+                    specializationSelect.appendChild(option);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

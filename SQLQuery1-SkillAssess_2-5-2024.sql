@@ -1,0 +1,2 @@
+ALTER TABLE Employees DROP COLUMN Photo;
+ALTER TABLE Employees DROP COLUMN Password;

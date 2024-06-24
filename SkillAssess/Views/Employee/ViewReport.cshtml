@@ -1,0 +1,225 @@
+﻿@model SkillAssess.Models.SkillAssessment
+
+@{
+    ViewData["Title"] = "View Report";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        .report-details {
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>@ViewData["Title"]</h1>
+
+        <table class="report-details">
+            <thead>
+                <tr>
+                    <th colspan="4" class="center-text" align="center">Assessment ID: @Model.AssessmentID</th>
+                </tr>
+                <tr>
+                    <th colspan="4" class="center-text" align="center">Employee ID: @Model.EmpID</th>
+                </tr>
+                <tr>
+                    <th>Technical Skills</th>
+                    <th>Rating</th>
+                    <th>Soft Skills</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Database Rating</td>
+                    <td>@Model.DatabaseRating</td>
+                    <td>Verbal Communication</td>
+                    <td>@Model.VerbalCommunication</td>
+                </tr>
+                <tr>
+                    <td>Programming Rating</td>
+                    <td>@Model.ProgrammingRating</td>
+                    <td>Written Communication</td>
+                    <td>@Model.WrittenCommunication</td>
+                </tr>
+                <tr>
+                    <td>Java Rating</td>
+                    <td>@Model.JavaRating</td>
+                    <td>Teamwork</td>
+                    <td>@Model.Teamwork</td>
+                </tr>
+                <tr>
+                    <td>C# Rating</td>
+                    <td>@Model.CSRating</td>
+                    <td>Problem Solving</td>
+                    <td>@Model.ProblemSolving</td>
+                </tr>
+                <tr>
+                    <td>Python Rating</td>
+                    <td>@Model.PythonRating</td>
+                    <td>Decision Making</td>
+                    <td>@Model.DecisionMaking</td>
+                </tr>
+                <tr>
+                    <td>Web Programming Rating</td>
+                    <td>@Model.WebProgrammingRating</td>
+                    <td>Leadership</td>
+                    <td>@Model.Leadership</td>
+                </tr>
+                <tr>
+                    <td>Other Technical</td>
+                    <td>@Model.OtherTechnical</td>
+                    <td>Any Foreign Language</td>
+                    <td>@Model.AnyForeignLanguage</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="center-text">Status: @Model.Status</td>
+                    <td colspan="2" class="center-text">
+                        <a href="@Url.Action("DownloadReport", "Manager", new { assessmentId = Model.AssessmentID })" class="btn-download">Download Report</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="chart-container">
+            <canvas id="technicalChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="softChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        var technicalRatings = [
+        @Model.DatabaseRating,
+        @Model.ProgrammingRating,
+        @Model.JavaRating,
+        @Model.CSRating,
+        @Model.PythonRating,
+        @Model.WebProgrammingRating
+                        ];
+
+        var softRatings = [
+            "@Model.VerbalCommunication",
+            "@Model.WrittenCommunication",
+            "@Model.Teamwork",
+            "@Model.ProblemSolving",
+            "@Model.DecisionMaking",
+            "@Model.Leadership",
+            "@Model.AnyForeignLanguage"
+        ];
+
+        var ctx1 = document.getElementById('technicalChart').getContext('2d');
+        var technicalChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['Database', 'Programming', 'Java', 'C#', 'Python', 'Web Programming', 'Other Technical'],
+                datasets: [{
+                    label: 'Technical Skill Ratings',
+                    data: technicalRatings,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10
+                    }
+                }
+            }
+        });
+
+
+        function convertToNumeric(value) {
+            if (value === "Beginner") {
+                return 1;
+            } else if (value === "Intermediate") {
+                return 5;
+            } else if (value === "Advanced") {
+                return 10;
+            } else {
+                return 0;
+            }
+        }
+
+        // Convert soft skills ratings to numerical values
+        var softRatingsNumeric = softRatings.map(function (rating) {
+            return convertToNumeric(rating);
+        });
+
+        var ctx2 = document.getElementById('softChart').getContext('2d');
+        var softChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Verbal Communication', 'Written Communication', 'Teamwork', 'Problem Solving', 'Decision Making', 'Leadership', 'Any Foreign Language'],
+                datasets: [{
+                    label: 'Soft Skill Ratings',
+                    data: softRatingsNumeric,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: {
+                            // Convert numerical values back to proficiency levels on the y-axis
+                            callback: function (value) {
+                                if (value === 1) {
+                                    return "Beginner";
+                                } else if (value === 5) {
+                                    return "Intermediate";
+                                } else if (value === 10) {
+                                    return "Advanced";
+                                } else {
+                                    return "";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

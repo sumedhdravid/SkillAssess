@@ -1,0 +1,292 @@
+﻿@model List<SkillAssess.Models.SkillAssessment>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .report-item {
+            margin-bottom: 20px;
+        }
+
+        .report-options {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-view {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-download {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .btn-download:hover {
+            background-color: #218838;
+        }
+
+        /* Navigation Bar Styling */
+        nav.navbar {
+            background-color: #007bff !important;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+
+        .navbar-nav .nav-link:hover {
+            opacity: 0.8;
+        }
+
+        /* Search Bar Styling */
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid #ccc;
+            width: calc(50% - 10px);
+            margin-right: 10px;
+            background: #f1f1f1;
+        }
+
+        .search-container button {
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            font-size: 17px;
+            border: 1px solid #ccc;
+            border-left: none;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Manager Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="@Url.Action("Index", "Manager")">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("EmployeeDetails", "Manager")">Employee Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("SkillAssessment", "Manager")">Skill Assessment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#Reports">Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Logout", "Manager")">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <h1>Reports</h1>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <form action="@Url.Action("Reports", "Manager")" method="get">
+                <input type="text" placeholder="Search by Employee ID" name="employeeId">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        @if (Model != null)
+        {
+            foreach (var assessment in Model)
+            {
+                <div class="report-item">
+                    <div class="emp-id">Employee ID: @assessment.EmpID</div>
+                    <div class="status">Status: @assessment.Status</div>
+                    <div class="report-options">
+                        <a href="@Url.Action("ViewReport", "Manager", new { empid = assessment.EmpID })" class="btn btn-view">View Report</a>
+                        @* <a href="@Url.Action("DownloadReport", "Manager", new { empid = assessment.EmpID })" class="btn btn-download">Download Report</a> *@
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No Data Available</p>
+        }
+
+        <div>
+            <canvas id="technicalSkillsChart" width="400" height="200"></canvas>
+        </div>
+
+        <div>
+            <canvas id="softSkillsChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script>
+        var technicalSkillsData = {
+            labels: ['Database', 'Programming', 'Java', 'C#', 'Python', 'Web Programming', 'Other Technical'],
+            datasets: [{
+                label: 'Technical Skills Ratings',
+                data: [
+                    @foreach(var assessment in Model)
+                    {
+                        <text>[
+                            @assessment.DatabaseRating,
+                            @assessment.ProgrammingRating,
+                            @assessment.JavaRating,
+                            @assessment.CSRating,
+                            @assessment.PythonRating,
+                            @assessment.WebProgrammingRating,
+                            @assessment.OtherTechnical,
+                        ]</text>
+                    }
+                ],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        var softSkillsData = {
+            labels: ['Verbal Communication', 'Written Communication', 'Teamwork', 'Problem Solving', 'Decision Making', 'Leadership', 'Any Foreign Language'],
+            datasets: [{
+                label: 'Soft Skills Ratings',
+                data: [
+                    @foreach(var assessment in Model)
+                    {
+                        <text>[
+                            @assessment.VerbalCommunication,
+                            @assessment.WrittenCommunication,
+                            @assessment.Teamwork,
+                            @assessment.ProblemSolving,
+                            @assessment.DecisionMaking,
+                            @assessment.Leadership,
+                            @assessment.AnyForeignLanguage,
+                        ]</text>
+                    }
+                ],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        var technicalSkillsCtx = document.getElementById('technicalSkillsChart').getContext('2d');
+        var technicalSkillsChart = new Chart(technicalSkillsCtx, {
+            type: 'bar',
+            data: technicalSkillsData,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        var softSkillsCtx = document.getElementById('softSkillsChart').getContext('2d');
+        var softSkillsChart = new Chart(softSkillsCtx, {
+            type: 'bar',
+            data: softSkillsData,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</body>
+</html>

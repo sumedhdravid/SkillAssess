@@ -1,0 +1,57 @@
+﻿@model List<SkillAssess.Models.Notification>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            padding-top: 20px;
+        }
+
+        .notification-box {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+            .notification-box h4 {
+                margin-bottom: 15px;
+            }
+
+            .notification-box p {
+                margin: 0;
+            }
+    </style>
+</head>
+<body>
+    <a href="@Url.Action("Index", "Manager")" class="back-arrow">&#8592; Back to Home</a>
+    <div class="container">
+        <h2 align="center" style="color: #007bff;">Notifications</h2>
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var notification in Model)
+            {
+                <div class="notification-box">
+                    <h4>New Notification</h4>
+                    <p>@notification.Message</p>
+                    <small>@notification.DateCreated.ToString("f")</small>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="notification-box">
+                <h4>No Notifications</h4>
+                <p>There are no new notifications at this time.</p>
+            </div>
+        }
+    </div>
+</body>
+</html>

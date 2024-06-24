@@ -1,0 +1,297 @@
+﻿@* 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard</title>
+    
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        
+        .navbar {
+            background-color: #f8f9fa; 
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: #007bff; 
+        }
+
+        
+        .container-fluid {
+            padding-top: 20px;
+        }
+
+        
+        section {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        
+        .btn-primary {
+            background-color: #007bff; 
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3; 
+                border-color: #0056b3;
+            }
+
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #f8f9fa; 
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Manager Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("EmployeeDetails", "Manager")">Employee Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("SkillAssessment", "Manager")">Skill Assessment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Reports", "Manager")">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Logout", "Manager")">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Home Page -->
+                <section id="home">
+                    <h2>@ViewBag.WelcomeMessage</h2>
+                    <!-- Display manager-specific content here -->
+                </section>
+
+                @* <!-- Employee Details -->
+                <section id="employee-details">
+                    <h2>Employee Details</h2>
+                    <!-- Display employee details here -->
+                </section>
+
+                <!-- Skill Assessment -->
+                <section id="skill-assessment">
+                    <h2>Skill Assessment</h2>
+                    <!-- Display skill assessment form here -->
+                </section>
+
+                <!-- Reports -->
+                <section id="reports">
+                    <h2>Reports</h2>
+                    <!-- Display reports here -->
+                </section>
+
+                <!-- Logout -->
+                <section id="logout">
+                    <h2>Logout</h2>
+                    <!-- Add logout functionality here -->
+                </section> *@
+           @* </div>
+        </div>
+    </div>
+
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+@*     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+</body>
+</html>
+ *@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+            background-color: #007bff;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+        }
+
+        .container-fluid {
+            padding-top: 20px;
+        }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
+
+        .widget {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+            .widget h4 {
+                margin-bottom: 15px;
+            }
+
+            .widget p {
+                margin: 0;
+            }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #f8f9fa;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">Manager Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("EmployeeDetails", "Manager")">Employee Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("SkillAssessment", "Manager")">Skill Assessment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Reports", "Manager")">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Logout", "Manager")">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Home Page -->
+                <section id="home">
+                    <h2 align="center" style="color: #007bff;">@ViewBag.WelcomeMessage</h2>
+                    <h4 align="center" id="greeting-message" style="color:  #007bff;"></h4>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="widget">
+                                <h4>Employee Count</h4>
+                                <p>Total Employees Under You: @ViewBag.EmployeeCount</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="widget">
+                                <h4>Notifications</h4>
+                                @if (ViewBag.NotificationCount > 0)
+                                {
+                                    <p>You have @ViewBag.NotificationCount new notifications!</p>
+                                }
+                                else
+                                {
+                                    <p>No new notifications.</p>
+                                }
+                                <a href="@Url.Action("Notifications", "Manager")" class="btn btn-info">View</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+
+        window.onload = function () {
+            var now = new Date();
+            var hours = now.getHours();
+            var greeting;
+
+            if (hours < 12) {
+                greeting = "Good Morning";
+            } else if (hours < 18) {
+                greeting = "Good Afternoon";
+            } else {
+                greeting = "Good Evening";
+            }
+
+            document.getElementById('greeting-message').textContent = greeting;
+        };
+
+        // $(document).ready(function () {
+        //     var notificationMessage = "@ViewBag.NotificationMessage";
+        //     if (notificationMessage !== "No new notifications.") {
+        //         alert(notificationMessage);
+        //     }
+        // });
+    </script>
+</body>
+</html>

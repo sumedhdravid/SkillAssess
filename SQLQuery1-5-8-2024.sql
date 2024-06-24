@@ -1,0 +1,1 @@
+ALTER TABLE SkillAssessment ADD CONSTRAINT FK_SkillAssessment_Employees FOREIGN KEY (EmpID) REFERENCES Employees(EmployeeId);

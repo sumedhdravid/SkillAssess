@@ -1,0 +1,324 @@
+﻿@* @* @model SkillAssess.Models.AuthUser
+
+<h2>Login</h2>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+   
+    <button type="submit" class="btn btn-primary mt-3">Login</button>
+</form>
+
+<div class="mt-3">
+    <a href="@Url.Action("Signup", "Auth")">Sign Up</a>
+</div>
+ *@
+ @*
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["AlertMessage"]
+    </div>
+}
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Error
+    </div>
+}
+ @model SkillAssess.Models.AuthUser
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add this link in the head section of your HTML layout -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        
+        body {
+            background-image: url('/lib/background.jpg'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8); 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+
+        
+        .project {
+            margin-bottom: 20px;
+        }
+
+            .project h1 {
+                font-size: 36px;
+                font-weight: bold;
+                color: #007bff;
+            }
+
+            .project img {
+                width: 100px;
+                height: 100px;
+                margin-top: 10px;
+            }
+
+        
+        .card {
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px 5px 0 0;
+            text-align: center;
+        }
+
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+            }
+
+        
+        .mt-3 {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="project">
+            <h1>SkillAssess</h1>
+            <img src="/lib/logo-white.png" alt="SkillAssess Logo">
+        </div>
+    <div class="card">
+        <div class="card-header">
+            <h2>Login</h2>
+        </div>
+        <form method="post">
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <input id="Email" name="Email" asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Please enter a valid email address. Only @@prorigosoftware.com emails are allowed."></i>
+            </div>
+            <div class="form-group">
+                <label for="Password">Password</label>
+                <input id="Password" name="Password" asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                    <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Password must contain at least 8 characters, including a capital letter, a number, and a special character."></i>
+            </div>
+            <div class="role-label">
+                <label>Role:</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" id="Employee" name="Role" value="Employee" class="form-check-input role-radio" checked>
+                <label for="Employee" class="form-check-label">Employee</label>
+            </div>
+            <div class="form-check-inline">
+                <input type="radio" id="Manager" name="Role" value="Manager" class="form-check-input role-radio">
+                <label for="Manager" class="form-check-label">Manager</label>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Login</button>
+            <a href="@Url.Action("Signup", "Auth")" class="btn btn-secondary mt-3 ml-2">Sign Up</a>
+        </form>
+    </div>
+</body>
+</html> *@
+
+         @model SkillAssess.Models.AuthUser
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    @* <link rel="stylesheet" href="~/css/Styles.css"> *@
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .project h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+            .form-group i {
+                position: absolute;
+                top: 50%;
+                right: 10px;
+                transform: translateY(-50%);
+                color: #007bff;
+            }
+
+        .form-check-inline .form-check-label {
+            margin-right: 20px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            width: 48%;
+        }
+
+        .btn-secondary {
+            width: 48%;
+            margin-left: 4%;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="project">
+            <h1>Skill Assess</h1>
+            <img src="/lib/logo-black.png" alt="SkillAssess Logo" class="d-block mx-auto" style="max-width: 150px;">
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Login</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="Email">Email</label>
+                        <input id="Email" name="Email" asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Please enter a valid email address. Only @@prorigosoftware.com emails are allowed."></i>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Password</label>
+                        <input id="Password" name="Password" asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <i class="fa fa-info-circle" aria-hidden="true" data-toggle="tooltip" title="Password must contain at least 8 characters, including a capital letter, a number, and a special character."></i>
+                    </div>
+                    <div class="form-group">
+                        <label>Role:</label>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="Employee" name="Role" value="Employee" class="form-check-input" checked>
+                            <label for="Employee" class="form-check-label">Employee</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" id="Manager" name="Role" value="Manager" class="form-check-input">
+                            <label for="Manager" class="form-check-label">Manager</label>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <a href="@Url.Action("Signup", "Auth")" class="btn btn-secondary">Sign Up</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @if (TempData["AlertMessage"] != null)
+        {
+            <div class="alert alert-danger mt-3" role="alert">
+                @TempData["AlertMessage"]
+            </div>
+        }
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger mt-3" role="alert">
+                @ViewBag.Error
+            </div>
+        }
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+    </script>
+</body>
+</html>
