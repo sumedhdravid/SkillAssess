@@ -300,6 +300,66 @@ namespace SkillAssess.Controllers
             return View(employee);
         }
 
+        // GET: Employee/EditLMSRegistration/5
+        public IActionResult EditLMSRegistration(int id)
+        {
+            var employee = _context.Employees.Find(id);
+
+            if (employee == null)
+            {
+                TempData["AlertMessage"] = "LMS Registration form not found.";
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Managers = _context.AuthUsers.Where(u => u.Role == "Manager").ToList();
+            return View(employee);
+        }
+
+        // POST: Employee/EditLMSRegistration/5
+        [HttpPost]
+        public IActionResult EditLMSRegistration(Employee model)
+        {
+            if (ModelState.IsValid)
+            {
+                var employee = _context.Employees.Find(model.EmployeeId);
+                if (employee != null)
+                {
+                    // Update editable fields only
+                    employee.JobRole = model.JobRole;
+                    employee.ContactNumber = model.ContactNumber;
+                    employee.Address = model.Address;
+                    employee.DateOfJoining = model.DateOfJoining;
+                    employee.TotalExperience = model.TotalExperience;
+                    employee.BachelorDegree = model.BachelorDegree;
+                    employee.BachelorSpecialization = model.BachelorSpecialization;
+                    employee.MastersDegree = model.MastersDegree;
+                    employee.MastersSpecialization = model.MastersSpecialization;
+                    employee.Certifications = model.Certifications;
+
+                    // Handle file upload if any
+                    if (model.ProfileFile != null && model.ProfileFile.Length > 0)
+                    {
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfileFile.FileName;
+                        string filePath = Path.Combine(_uploadsFolder, uniqueFileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            model.ProfileFile.CopyTo(stream);
+                        }
+                        employee.Photo = uniqueFileName; // Update the photo in the database
+                    }
+
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = "LMS Registration form updated successfully.";
+                    return RedirectToAction("ViewLMSRegistration", new { id = employee.EmployeeId });
+                }
+            }
+
+            ViewBag.Managers = _context.AuthUsers.Where(u => u.Role == "Manager").ToList();
+            return View(model);
+        }
+
+
         public IActionResult ViewSkillAssessment()
         {
             string userEmail = HttpContext.Session.GetString("UserEmail");

@@ -42,7 +42,7 @@
             border-color: #007bff;
         }
 
-            .btn-primary:hover {
+        .btn-primary:hover  {
                 background-color: #0056b3; /* Darker blue on hover */
                 border-color: #0056b3;
             }
@@ -153,6 +153,7 @@
         </div>
 
         <a href="@Url.Action("Index", "Employee")" class="btn btn-primary">Go Back To Home Page</a>
+        <a href="@Url.Action("EditLMSRegistration", "Employee", new { id = Model.EmployeeId })" class="btn btn-secondary">Edit</a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -36,6 +36,7 @@ namespace SkillAssess.Models
 
         [Required]
         public string ReportingManagerEmail { get; set; }
+
     }
 
 }
