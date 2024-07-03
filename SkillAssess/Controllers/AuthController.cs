@@ -62,14 +62,22 @@ namespace SkillAssess.Controllers
         [HttpPost]
         public IActionResult Signup(AuthUser model)
         {
+            var user = _context.AuthUsers.FirstOrDefault(u => u.Email == model.Email);
+
             if (ModelState.IsValid)
             {
-                
-                _context.AuthUsers.Add(model);
-                _context.SaveChanges();
+                if (user != null)
+                {
+                    TempData["AlertMessage"] = "User Already Exists !!!";
+                }
+                else
+                {
+                    _context.AuthUsers.Add(model);
+                    _context.SaveChanges();
 
-                
-                return RedirectToAction("Login");
+
+                    return RedirectToAction("Login");
+                }
             }
 
             
